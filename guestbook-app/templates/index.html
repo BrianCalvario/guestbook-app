@@ -6,13 +6,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Libro de Visitas</h1>
-    <form id="messageForm">
-        <input type="text" id="name" placeholder="Tu nombre" required>
-        <textarea id="message" placeholder="Tu mensaje" required></textarea>
-        <button type="submit">Enviar</button>
-    </form>
-    <ul id="messagesList"></ul>
+    <div class="container">
+        <h1>Libro de Visitas</h1>
+        <form id="messageForm">
+            <input type="text" id="name" placeholder="Tu nombre" required>
+            <textarea id="message" placeholder="Escribe tu mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+        <ul id="messagesList"></ul>
+    </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
