@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guestbook</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Guestbook</h1>
+
+    <form id="messageForm">
+        <input type="text" id="name" placeholder="Your name" required />
+        <textarea id="message" placeholder="Your message" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <ul id="messagesList"></ul>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
