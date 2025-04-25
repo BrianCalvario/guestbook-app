@@ -1,39 +1,62 @@
-from flask import Flask, request, jsonify, render_template
-import sqlite3
+from flask import Flask, jsonify, request, render_template
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+app = Flask(__name__)
 
-def get_db_connection():
-    conn = sqlite3.connect('guestbook.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+# Almacenamiento en memoria
+mensajes = []
+contador_id = 1
 
+# Ruta principal: muestra la web
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/messages', methods=['GET'])
-def get_messages():
-    conn = get_db_connection()
-    messages = conn.execute('SELECT * FROM messages ORDER BY timestamp DESC').fetchall()
-    conn.close()
-    return jsonify([dict(msg) for msg in messages])
+# GET: lista todos los mensajes
+@app.route('/mensajes', methods=['GET'])
+def obtener_mensajes():
+    return jsonify(mensajes)
 
-@app.route('/messages', methods=['POST'])
-def add_message():
-    data = request.get_json()
-    name = data.get('name')
-    message = data.get('message')
+# GET: obtiene mensaje por id
+@app.route('/mensajes/<int:id>', methods=['GET'])
+def obtener_mensaje(id):
+    for mensaje in mensajes:
+        if mensaje['id'] == id:
+            return jsonify(mensaje)
+    return jsonify({'error': 'Mensaje no encontrado'}), 404
 
-    if not name or not message:
-        return jsonify({'error': 'Name and message are required'}), 400
+# POST: agrega nuevo mensaje
+@app.route('/mensajes', methods=['POST'])
+def crear_mensaje():
+    global contador_id
+    datos = request.get_json()
+    nuevo = {
+        'id': contador_id,
+        'nombre': datos.get('nombre'),
+        'mensaje': datos.get('mensaje')
+    }
+    mensajes.append(nuevo)
+    contador_id += 1
+    return jsonify(nuevo), 201
 
-    conn = get_db_connection()
-    conn.execute('INSERT INTO messages (name, message) VALUES (?, ?)', (name, message))
-    conn.commit()
-    conn.close()
+# PUT: actualiza un mensaje
+@app.route('/mensajes/<int:id>', methods=['PUT'])
+def actualizar_mensaje(id):
+    datos = request.get_json()
+    for mensaje in mensajes:
+        if mensaje['id'] == id:
+            mensaje['nombre'] = datos.get('nombre', mensaje['nombre'])
+            mensaje['mensaje'] = datos.get('mensaje', mensaje['mensaje'])
+            return jsonify(mensaje)
+    return jsonify({'error': 'Mensaje no encontrado'}), 404
 
-    return jsonify({'success': True}), 201
+# DELETE: elimina un mensaje
+@app.route('/mensajes/<int:id>', methods=['DELETE'])
+def eliminar_mensaje(id):
+    for mensaje in mensajes:
+        if mensaje['id'] == id:
+            mensajes.remove(mensaje)
+            return jsonify({'mensaje': 'Mensaje eliminado'})
+    return jsonify({'error': 'Mensaje no encontrado'}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

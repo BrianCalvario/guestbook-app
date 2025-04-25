@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 messagesList.innerHTML = '';
                 data.forEach(msg => {
                     const li = document.createElement('li');
-                    li.textContent = `${msg.name}: ${msg.message};`
+                    li.innerHTML = `<strong>${msg.name}:</strong> ${msg.message};`
                     messagesList.appendChild(li);
                 });
             });
@@ -17,8 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = document.getElementById('name').value;
-        const message = document.getElementById('message').value;
+        const name = document.getElementById('name').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        if (!name || !message) return;
 
         fetch('/messages', {
             method: 'POST',
