@@ -2,18 +2,26 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Guestbook</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro de Visitas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Libro de Visitas</h1>
-        <form id="messageForm">
-            <input type="text" id="name" placeholder="Tu nombre" required>
-            <textarea id="message" placeholder="Escribe tu mensaje" required></textarea>
+
+        <form action="/agregar" method="POST">
+            <input type="text" name="nombre" placeholder="Tu nombre" required><br><br>
+            <textarea name="mensaje" placeholder="Tu mensaje" required></textarea><br><br>
             <button type="submit">Enviar</button>
         </form>
-        <ul id="messagesList"></ul>
+
+        <h2>Mensajes:</h2>
+        {% for invitado in invitados %}
+            <div class="message">
+                <p><strong>{{ invitado.nombre }}</strong>: {{ invitado.mensaje }}</p>
+            </div>
+        {% endfor %}
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
