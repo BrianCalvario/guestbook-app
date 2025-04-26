@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #442d15;
-    color: #333;
+    background-color: #645449;
+    color: #000000;
     margin: 0;
     padding: 0;
 }
@@ -10,7 +10,7 @@ body {
     width: 80%;
     max-width: 800px;
     margin: 50px auto;
-    background-color: #fff;
+    background-color: #9c7b66;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -36,7 +36,7 @@ textarea {
 
 button {
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color: #343434;
     color: white;
     border: none;
     border-radius: 5px;
@@ -44,7 +44,7 @@ button {
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #2d2d2d;
 }
 
 .message {
